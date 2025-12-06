@@ -1,0 +1,7 @@
+*.d.ts
+node_modules
+.serverless
+serverless
+./.serverlesslambda-backend-sequelize.zip
+.env
+.env.*

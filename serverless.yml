@@ -1,0 +1,162 @@
+service: lambda-backend-sequelize
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+  environment:
+    MONGO_URI: ${env:MONGO_URI, 'mongodb://127.0.0.1:27017/lambda_db'}
+    DB_HOST: 'your-rds-host.amazonaws.com'
+    DB_PORT: 5432
+    DB_USERNAME: 'youruser'
+    DB_PASSWORD: 'yourpass'
+    DB_NAME: 'yourdbname'
+
+functions:
+  hello:
+    handler: src/handlers/hello.handler
+    events:
+      - httpApi:
+          path: /hello
+          method: get
+
+  listUsers:
+    handler: src/handlers/users.listUsers
+    events:
+      - httpApi:
+          path: /users
+          method: get
+
+  createUser:
+    handler: src/handlers/users.createUser
+    events:
+      - httpApi:
+          path: /users
+          method: post
+
+  getUser:
+    handler: src/handlers/users.getUser
+    events:
+      - httpApi:
+          path: /users/{id}
+          method: get
+
+  updateUser:
+    handler: src/handlers/users.updateUser
+    events:
+      - httpApi:
+          path: /users/{id}
+          method: put
+
+  deleteUser:
+    handler: src/handlers/users.deleteUser
+    events:
+      - httpApi:
+          path: /users/{id}
+          method: delete
+
+  signup:
+    handler: src/handlers/auth.signup
+    events:
+      - httpApi:
+          path: /auth/signup
+          method: post
+
+  login:
+    handler: src/handlers/auth.login
+    events:
+      - httpApi:
+          path: /auth/login
+          method: post
+
+  # Admin routes (protected)
+  createAdmin:
+    handler: src/handlers/admin.createAdmin
+    events:
+      - httpApi:
+          path: /admin
+          method: post
+
+  listAdmins:
+    handler: src/handlers/admin.listAdmins
+    events:
+      - httpApi:
+          path: /admin
+          method: get
+
+  getAdmin:
+    handler: src/handlers/admin.getAdmin
+    events:
+      - httpApi:
+          path: /admin/{id}
+          method: get
+
+  updateAdmin:
+    handler: src/handlers/admin.updateAdmin
+    events:
+      - httpApi:
+          path: /admin/{id}
+          method: put
+
+  deleteAdmin:
+    handler: src/handlers/admin.deleteAdmin
+    events:
+      - httpApi:
+          path: /admin/{id}
+          method: delete
+
+  # Course routes
+  createCourse:
+    handler: src/handlers/courses.createCourse
+    events:
+      - httpApi:
+          path: /courses
+          method: post
+
+  listCourses:
+    handler: src/handlers/courses.listCourses
+    events:
+      - httpApi:
+          path: /courses
+          method: get
+
+  getCourse:
+    handler: src/handlers/courses.getCourse
+    events:
+      - httpApi:
+          path: /courses/{id}
+          method: get
+
+  updateCourse:
+    handler: src/handlers/courses.updateCourse
+    events:
+      - httpApi:
+          path: /courses/{id}
+          method: put
+
+  deleteCourse:
+    handler: src/handlers/courses.deleteCourse
+    events:
+      - httpApi:
+          path: /courses/{id}
+          method: delete
+
+  enrollCourse:
+    handler: src/handlers/courses.enroll
+    events:
+      - httpApi:
+          path: /courses/{id}/enroll
+          method: post
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline
+
+custom:
+  dotenv:
+    path: .env
+  serverless-offline:
+    httpPort: 3000
+    lambdaPort: 3002
