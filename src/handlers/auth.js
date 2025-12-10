@@ -6,8 +6,9 @@ module.exports.signup = async (event) => {
   try {
     await connect();
     const body = event.body ? JSON.parse(event.body) : {};
-    const { name, email, password } = body;
-    const result = await signupService({ name, email, password });
+
+    const result = await signupService(body);
+    
     return success(result);
   } catch (error) {
     console.error('Signup error:', error.message || error);

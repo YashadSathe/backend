@@ -13,6 +13,8 @@ provider:
     DB_USERNAME: 'youruser'
     DB_PASSWORD: 'yourpass'
     DB_NAME: 'yourdbname'
+  httpApi:
+    cors: true
 
 functions:
   hello:
@@ -149,6 +151,101 @@ functions:
       - httpApi:
           path: /courses/{id}/enroll
           method: post
+
+  # Mentor routes
+  createMentor:
+    handler: src/handlers/mentors.createMentor
+    events:
+      - httpApi:
+          path: /mentors
+          method: post
+
+  listMentors:
+    handler: src/handlers/mentors.listMentors
+    events:
+      - httpApi:
+          path: /mentors
+          method: get
+
+  getMentor:
+    handler: src/handlers/mentors.getMentor
+    events:
+      - httpApi:
+          path: /mentors/{id}
+          method: get
+
+  updateMentor:
+    handler: src/handlers/mentors.updateMentor
+    events:
+      - httpApi:
+          path: /mentors/{id}
+          method: put
+
+  deleteMentor:
+    handler: src/handlers/mentors.deleteMentor
+    events:
+      - httpApi:
+          path: /mentors/{id}
+          method: delete
+
+  # Course & Curriculum (mentor)
+  mentorCreateCourse:
+    handler: src/handlers/mentorModule.createCourse
+    events:
+      - httpApi:
+          path: /mentor/courses
+          method: post
+
+  mentorGetCourses:
+    handler: src/handlers/mentorModule.getMyCourses
+    events:
+      - httpApi:
+          path: /mentor/courses
+          method: get
+
+  mentorUpdateCurriculum:
+    handler: src/handlers/mentorModule.updateCurriculum
+    events:
+      - httpApi:
+          path: /mentor/courses/{id}/curriculum
+          method: put
+
+  # 2. Live Session Management (mentor)
+  mentorScheduleSession:
+    handler: src/handlers/mentorModule.scheduleSession
+    events:
+      - httpApi:
+          path: /sessions
+          method: post
+
+  mentorGetSessions:
+    handler: src/handlers/mentorModule.getMySessions
+    events:
+      - httpApi:
+          path: /sessions
+          method: get
+
+  # 3. Assignment & Submissions (mentor)
+  mentorCreateAssignment:
+    handler: src/handlers/mentorModule.createAssignment
+    events:
+      - httpApi:
+          path: /assignments
+          method: post
+
+  mentorGetSubmissions:
+    handler: src/handlers/mentorModule.getPendingSubmissions
+    events:
+      - httpApi:
+          path: /submissions/pending
+          method: get
+
+  mentorReviewSubmission:
+    handler: src/handlers/mentorModule.reviewSubmission
+    events:
+      - httpApi:
+          path: /submissions/{id}
+          method: put
 
 plugins:
   - serverless-dotenv-plugin

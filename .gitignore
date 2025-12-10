@@ -4,4 +4,4 @@ node_modules
 serverless
 ./.serverlesslambda-backend-sequelize.zip
 .env
-.env.*
+.emv*

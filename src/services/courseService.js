@@ -6,6 +6,10 @@ exports.createCourse = async (data) => {
   return course.toObject();
 };
 
+exports.getMentorCourses = async (mentorId) => {
+  return await Course.find({ mentorId }).sort({ createdAt: -1 });
+};
+
 exports.getCourseById = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id)) return null;
   return await Course.findById(id).populate('students', '-password');
@@ -26,6 +30,14 @@ exports.deleteCourse = async (id) => {
   if (!course) throw new Error('Course not found');
   await course.remove();
   return true;
+};
+
+exports.updateCurriculum = async (courseId, curriculum) => {
+  return await Course.findByIdAndUpdate(
+    courseId, 
+    { curriculum }, 
+    { new: true }
+  );
 };
 
 exports.listCourses = async ({ page = 1, limit = 10, filters = {}, sortBy = 'createdAt', sortOrder = 'ASC' } = {}) => {
